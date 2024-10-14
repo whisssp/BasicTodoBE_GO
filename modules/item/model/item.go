@@ -34,6 +34,8 @@ type TodoItemUpdate struct {
 	Status      *ItemStatus `json:"status" gorm:"column:status;"`
 	DD          string      `json:"test" gorm:"-"`
 	DD2         string      `json:"test2" gorm:"-"`
+	DD3         string      `json:"test3" gorm:"-"`
+	DD4         string      `json:"test4" gorm:"-"`
 }
 
 func (TodoItemCreation) TableName() string { return TodoItem{}.TableName() }
