@@ -1,5 +1,7 @@
 package common
 
+import "fmt"
+
 type Paging struct {
 	Page  int   `json:"page" form:"page"`
 	Limit int   `json:"limit" form:"limit"`
@@ -13,5 +15,7 @@ func (p *Paging) Process() {
 
 	if p.Limit <= 0 || p.Limit >= 100 {
 		p.Limit = 10
+		s := "asda"
+		fmt.Printf(s)
 	}
 }
