@@ -1,14 +1,11 @@
 package main
 
 import (
-	"ToDoAppBackEnd/common"
-	"ToDoAppBackEnd/modules/item/model"
 	ginitem "ToDoAppBackEnd/modules/item/transport/gin"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"net/http"
 	"os"
 )
 
@@ -37,40 +34,5 @@ func main() {
 		}
 	}
 
-	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
-}
-
-func GetListItem(db *gorm.DB) func(*gin.Context) {
-	return func(c *gin.Context) {
-		var paging common.Paging
-
-		if err := c.ShouldBind(&paging); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
-			return
-		}
-
-		paging.Process()
-
-		var result []model.TodoItem
-
-		db = db.Where("status <> ?", "DELETED")
-
-		if err := db.Table(model.TodoItem{}.TableName()).Count(&paging.Total).Error; err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
-			return
-		}
-
-		if err := db.Order("id desc").Offset((paging.Page - 1) * paging.Limit).Limit(paging.Limit).Find(&result).Error; err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
-			return
-		}
-
-		c.JSON(http.StatusOK, common.NewSuccessResponse(result, paging, nil))
-	}
+	r.Run("localhost:8081") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }

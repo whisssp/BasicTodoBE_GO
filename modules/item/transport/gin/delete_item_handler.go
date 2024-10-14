@@ -5,9 +5,11 @@ import (
 	"ToDoAppBackEnd/modules/item/biz"
 	"ToDoAppBackEnd/modules/item/model"
 	"ToDoAppBackEnd/modules/item/storage"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"net/http"
+	"reflect"
 	"strconv"
 )
 
@@ -31,6 +33,7 @@ func DeleteItem(db *gorm.DB) func(*gin.Context) {
 		business := biz.NewDeleteItemBiz(store)
 
 		if err := business.DeleteItemById(c.Request.Context(), id); err != nil {
+			fmt.Println("error conver", reflect.TypeOf(err))
 			c.JSON(http.StatusBadRequest, err)
 			return
 		}
